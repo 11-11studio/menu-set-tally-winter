@@ -77,6 +77,15 @@ h1.titolo{margin:6px 0 6px;color:#fff;font-size:32px;line-height:1.06;font-weigh
 h1.titolo em{font-style:normal;color:var(--rosa)}
 .sotto{margin:0;color:rgba(255,255,255,.72);font-size:13px;font-weight:500;letter-spacing:.02em}
 
+/* ---- interruttore lingua ---- */
+.lingua{display:inline-flex;gap:2px;margin:14px 0 0;padding:3px;border-radius:999px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28)}
+.lingua button{appearance:none;-webkit-appearance:none;border:none;background:transparent;
+  color:rgba(255,255,255,.82);font-family:var(--font);font-size:12px;font-weight:800;letter-spacing:.1em;
+  min-height:32px;padding:6px 15px;border-radius:999px;cursor:pointer;line-height:1}
+.lingua button[aria-pressed="true"]{background:var(--rosa);color:#1A1A1A}
+.lingua button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
 /* ---- pannello ---- */
 .card{background:#fff;border-radius:22px;padding:22px 18px 24px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
 .card + .card{margin-top:14px}
@@ -207,51 +216,55 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
     </div>
     <p class="eyebrow" id="eyebrow"></p>
     <h1 class="titolo" id="h1">Cosa mangi <em>oggi?</em></h1>
-    <p class="sotto">WINTER · 8–9 settembre 2026 · Nero Studio</p>
+    <p class="sotto" data-i18n="sotto">WINTER · 8–9 settembre 2026 · Nero Studio</p>
+    <div class="lingua" role="group" aria-label="Lingua / Language">
+      <button type="button" data-lang="it" aria-pressed="true">IT</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
   </header>
 
-  <div id="badgeDemo" class="badge-demo" hidden>DEMO · le risposte restano solo su questo telefono</div>
+  <div id="badgeDemo" class="badge-demo" hidden data-i18n="badgeDemo">DEMO · le risposte restano solo su questo telefono</div>
 
   <!-- ============ MODULO ============ -->
   <main id="vistaForm" class="card">
 
     <div class="sez">
-      <h2><span class="num">1</span> Chi sei</h2>
+      <h2><span class="num">1</span> <span data-i18n="sez1">Chi sei</span></h2>
       <div class="sel">
-        <select id="nome" aria-label="Scegli il tuo nome"></select>
+        <select id="nome" aria-label="Scegli il tuo nome" data-i18n-aria="ariaNome"></select>
       </div>
-      <input type="text" id="altroNome" placeholder="Scrivi il tuo nome e cognome" hidden>
+      <input type="text" id="altroNome" placeholder="Scrivi il tuo nome e cognome" data-i18n-placeholder="phNomeLibero" hidden>
     </div>
 
     <div class="sez">
-      <h2><span class="num">2</span> Quando</h2>
+      <h2><span class="num">2</span> <span data-i18n="sez2">Quando</span></h2>
       <div class="giorni" id="giorni"></div>
     </div>
 
     <div id="menuAperto">
       <div class="sez">
-        <h2><span class="num">3</span> Il primo</h2>
+        <h2><span class="num">3</span> <span data-i18n="sez3">Il primo</span></h2>
         <div class="piatti" id="primi"></div>
       </div>
 
       <div class="sez">
-        <h2><span class="num">4</span> Il secondo</h2>
+        <h2><span class="num">4</span> <span data-i18n="sez4">Il secondo</span></h2>
         <div class="piatti" id="secondi"></div>
       </div>
 
       <div class="sez">
-        <h2><span class="num">5</span> Il contorno</h2>
+        <h2><span class="num">5</span> <span data-i18n="sez5">Il contorno</span></h2>
         <div class="piatti" id="contorni"></div>
       </div>
 
       <div class="sez">
-        <h2><span class="num">6</span> Note</h2>
-        <textarea id="note" placeholder="Allergie, «senza formaggio», «poco piccante»…"></textarea>
+        <h2><span class="num">6</span> <span data-i18n="sez6">Note</span></h2>
+        <textarea id="note" placeholder="Allergie, «senza formaggio», «poco piccante»…" data-i18n-placeholder="phNote"></textarea>
       </div>
     </div>
 
     <div id="menuChiuso" hidden>
-      <div class="chiuso-box"><span>❄︎</span>Menu di mercoledì in arrivo: te lo mandiamo appena la trattoria lo passa</div>
+      <div class="chiuso-box"><span>❄︎</span><span data-i18n="menuChiuso">Menu di mercoledì in arrivo: te lo mandiamo appena la trattoria lo passa</span></div>
     </div>
 
     <div id="erroreBox" class="errore" hidden></div>
@@ -265,64 +278,64 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
     <h2 id="confTitolo">Ordinato!</h2>
     <p class="chi" id="confChi"></p>
     <div class="riepilogo" id="confRiepilogo"></div>
-    <div class="avviso" style="margin-top:14px">Puoi cambiare idea fino alle <b>10:30</b>, rimandando il modulo.</div>
-    <button class="cta blu" id="cambia" style="margin-top:14px">Cambia scelta</button>
+    <div class="avviso" style="margin-top:14px" data-i18n="confAvviso">Puoi cambiare idea fino alle <b>10:30</b>, rimandando il modulo.</div>
+    <button class="cta blu" id="cambia" style="margin-top:14px" data-i18n="cambiaScelta">Cambia scelta</button>
   </main>
 
   <!-- ============ CUCINA ============ -->
   <main id="vistaCucina" class="card cucina" hidden>
     <img class="mini-logo" src="data:image/png;base64,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" alt="11:11 Studio">
     <div class="sez">
-      <h2>Riepilogo cucina</h2>
+      <h2 data-i18n="cucinaTitolo">Riepilogo cucina</h2>
       <div class="giorni" id="giorniCucina"></div>
     </div>
 
     <div class="kpi">
-      <div class="box"><b id="kRisposte">–</b><small>risposte</small></div>
-      <div class="box rosa"><b id="kMancano">–</b><small>mancano</small></div>
+      <div class="box"><b id="kRisposte">–</b><small data-i18n="kpiRisposte">risposte</small></div>
+      <div class="box rosa"><b id="kMancano">–</b><small data-i18n="kpiMancano">mancano</small></div>
     </div>
     <p id="fuoriLista" class="hint" style="margin:-10px 0 18px" hidden></p>
 
     <div class="sez">
-      <h2>Primi</h2>
+      <h2 data-i18n="totPrimi">Primi</h2>
       <div class="tot" id="totPrimi"></div>
     </div>
 
     <div class="sez">
-      <h2>Secondi</h2>
+      <h2 data-i18n="totSecondi">Secondi</h2>
       <div class="tot" id="totSecondi"></div>
     </div>
 
     <div class="sez">
-      <h2>Contorni</h2>
+      <h2 data-i18n="totContorni">Contorni</h2>
       <div class="tot" id="totContorni"></div>
     </div>
 
     <div class="sez">
-      <h2>Note</h2>
+      <h2 data-i18n="titoloNote">Note</h2>
       <div class="note-list" id="listaNote"></div>
     </div>
 
     <div class="sez">
-      <h2>Hanno risposto</h2>
+      <h2 data-i18n="hannoRisposto">Hanno risposto</h2>
       <div class="chips" id="chipsFatti"></div>
     </div>
 
     <div class="sez">
-      <h2>Ancora niente</h2>
+      <h2 data-i18n="ancoraNiente">Ancora niente</h2>
       <div class="chips" id="chipsMancanti"></div>
     </div>
 
     <div id="erroreCucina" class="errore" hidden></div>
     <div class="btn-riga">
       <button class="cta ghost" id="aggiorna">Aggiorna</button>
-      <button class="cta" id="copia">Copia ordine</button>
+      <button class="cta" id="copia" data-i18n="copiaOrdine">Copia ordine</button>
     </div>
-    <button class="cta blu" id="tornaMenu" style="margin-top:10px">Torna al menu</button>
+    <button class="cta blu" id="tornaMenu" style="margin-top:10px" data-i18n="tornaMenu">Torna al menu</button>
   </main>
 
   <div class="piede">
-    <a href="#cucina" id="linkCucina">Riepilogo cucina →</a>
+    <a href="#cucina" id="linkCucina" data-i18n="linkCucina">Riepilogo cucina →</a>
   </div>
 
 </div>
@@ -399,6 +412,173 @@ const CONFIG = {
 };
 /* ===================== fine configurazione ========================== */
 
+/* =====================================================================
+   TESTI — italiano e inglese. Si modifica solo qui dentro.
+   ---------------------------------------------------------------------
+   I nomi dei piatti e le etichette dei giorni restano in italiano in
+   entrambe le lingue (è il menu della trattoria), e così il testo di
+   «Copia ordine»: lo legge un fornitore italiano.
+   {e} {chi} {n} sono segnaposto sostituiti a runtime.
+   ===================================================================== */
+const I18N = {
+  it: {
+    titlePagina: "Cosa mangi oggi? · Tally Weijl WINTER · 11:11 Studio",
+    h1Form: "Cosa mangi <em>oggi?</em>",
+    h1Cucina: "Riepilogo <em>cucina</em>",
+    eyebrowCucina: "Per chi telefona alla trattoria",
+    sotto: "WINTER · 8–9 settembre 2026 · Nero Studio",
+    badgeDemo: "DEMO · le risposte restano solo su questo telefono",
+
+    sez1: "Chi sei",
+    ariaNome: "Scegli il tuo nome",
+    scegliNome: "Scegli il tuo nome…",
+    gruppoAltro: "Altro",
+    nonInLista: "Non sono in lista…",
+    phNomeLibero: "Scrivi il tuo nome e cognome",
+    sez2: "Quando",
+    sez3: "Il primo",
+    sez4: "Il secondo",
+    sez5: "Il contorno",
+    sez6: "Note",
+    phNote: "Allergie, «senza formaggio», «poco piccante»…",
+
+    saltoPrimo: "Salto il primo",
+    saltoSecondo: "Salto il secondo",
+    saltoContorno: "Salto il contorno",
+    menuInArrivo: "menu in arrivo",
+    menuChiuso: "Menu di mercoledì in arrivo: te lo mandiamo appena la trattoria lo passa",
+
+    inviaOrdine: "Mando l'ordine",
+    invioInCorso: "Invio…",
+    riprovaInvio: "Riprova a mandare",
+    menuNonDisponibile: "Menu non ancora disponibile",
+
+    errNome: "Prima dimmi chi sei: scegli il nome in cima.",
+    errPrimo: "Scegli un primo (o «Salto il primo»).",
+    errSecondo: "Scegli un secondo (o «Salto il secondo»).",
+    errContorno: "Scegli un contorno (o «Salto il contorno»).",
+    errInvio: "Non sono riuscito a mandare l'ordine ({e}). La scelta è rimasta qui: riprova fra un attimo o scrivi in chat.",
+
+    confOrdinato: "Ordinato!",
+    confAggiornato: "Scelta aggiornata!",
+    rigaPrimo: "Primo",
+    rigaSecondo: "Secondo",
+    rigaContorno: "Contorno",
+    rigaNote: "Note",
+    confAvviso: "Puoi cambiare idea fino alle <b>10:30</b>, rimandando il modulo.",
+    cambiaScelta: "Cambia scelta",
+    linkCucina: "Riepilogo cucina →",
+
+    cucinaTitolo: "Riepilogo cucina",
+    kpiRisposte: "risposte",
+    kpiMancano: "mancano",
+    fuoriLista: "Fuori lista: {chi} · le persone in lista sono {n}",
+    totPrimi: "Primi",
+    totSecondi: "Secondi",
+    totContorni: "Contorni",
+    saltaPrimo: "Salta il primo",
+    saltaSecondo: "Salta il secondo",
+    saltaContorno: "Salta il contorno",
+    nessunaScelta: "Ancora nessuna scelta",
+    titoloNote: "Note",
+    nessunaNota: "Nessuna nota",
+    hannoRisposto: "Hanno risposto",
+    ancoraNiente: "Ancora niente",
+    nessunoPerOra: "Nessuno, per ora",
+    rispostoTutti: "Hanno risposto tutti",
+    aggiorna: "Aggiorna",
+    carico: "Carico…",
+    riprova: "Riprova",
+    copiaOrdine: "Copia ordine",
+    tornaMenu: "Torna al menu",
+    errCucina: "Non riesco a leggere le risposte ({e}). Controlla la connessione e riprova.",
+    toastCopiato: "Ordine copiato",
+    toastCopiaMano: "Copia a mano dal messaggio",
+    toastAspetta: "Prima carico i dati",
+    netServer: "il server ha risposto {n}",
+    netRisposta: "risposta non valida dal foglio"
+  },
+
+  en: {
+    titlePagina: "What's for lunch? · Tally Weijl WINTER · 11:11 Studio",
+    h1Form: "What's for <em>lunch?</em>",
+    h1Cucina: "Kitchen <em>summary</em>",
+    eyebrowCucina: "For whoever calls the trattoria",
+    sotto: "WINTER · 8–9 September 2026 · Nero Studio",
+    badgeDemo: "DEMO · answers stay on this phone only",
+
+    sez1: "Who you are",
+    ariaNome: "Pick your name",
+    scegliNome: "Pick your name…",
+    gruppoAltro: "Other",
+    nonInLista: "I'm not on the list…",
+    phNomeLibero: "Type your first and last name",
+    sez2: "When",
+    sez3: "First course",
+    sez4: "Main course",
+    sez5: "Side dish",
+    sez6: "Notes",
+    phNote: "Allergies, “no cheese”, “not too spicy”…",
+
+    saltoPrimo: "Skip the first course",
+    saltoSecondo: "Skip the main",
+    saltoContorno: "Skip the side",
+    menuInArrivo: "menu coming soon",
+    menuChiuso: "Wednesday's menu is on its way: we'll send it as soon as the trattoria passes it over",
+
+    inviaOrdine: "Send my order",
+    invioInCorso: "Sending…",
+    riprovaInvio: "Try sending again",
+    menuNonDisponibile: "Menu not available yet",
+
+    errNome: "First tell me who you are: pick your name at the top.",
+    errPrimo: "Pick a first course (or “Skip the first course”).",
+    errSecondo: "Pick a main (or “Skip the main”).",
+    errContorno: "Pick a side (or “Skip the side”).",
+    errInvio: "I couldn't send your order ({e}). Your choice is still here: try again in a moment or write in the chat.",
+
+    confOrdinato: "Ordered!",
+    confAggiornato: "Choice updated!",
+    rigaPrimo: "First",
+    rigaSecondo: "Main",
+    rigaContorno: "Side",
+    rigaNote: "Notes",
+    confAvviso: "You can change your mind until <b>10:30</b> — just send the form again.",
+    cambiaScelta: "Change my choice",
+    linkCucina: "Kitchen summary →",
+
+    cucinaTitolo: "Kitchen summary",
+    kpiRisposte: "answers",
+    kpiMancano: "missing",
+    fuoriLista: "Not on the list: {chi} · there are {n} people on the list",
+    totPrimi: "First courses",
+    totSecondi: "Mains",
+    totContorni: "Sides",
+    saltaPrimo: "No first course",
+    saltaSecondo: "No main",
+    saltaContorno: "No side",
+    nessunaScelta: "No choices yet",
+    titoloNote: "Notes",
+    nessunaNota: "No notes",
+    hannoRisposto: "Already answered",
+    ancoraNiente: "Still missing",
+    nessunoPerOra: "Nobody yet",
+    rispostoTutti: "Everyone answered",
+    aggiorna: "Refresh",
+    carico: "Loading…",
+    riprova: "Try again",
+    copiaOrdine: "Copy order",
+    tornaMenu: "Back to the menu",
+    errCucina: "I can't read the answers ({e}). Check your connection and try again.",
+    toastCopiato: "Order copied",
+    toastCopiaMano: "Copy it by hand from the message",
+    toastAspetta: "Let me load the data first",
+    netServer: "the server answered {n}",
+    netRisposta: "invalid answer from the sheet"
+  }
+};
+/* ========================= fine testi =============================== */
+
 (function () {
   "use strict";
 
@@ -407,14 +587,122 @@ const CONFIG = {
   var K_NOME = "tw_menu_nome";
   var K_DEMO = "tw_menu_demo";
   var K_ULTIMA = "tw_menu_ultima";
+  var K_LANG = "tw_menu_lingua";
+
+  var LANG = "it";
 
   var $ = function (s) { return document.querySelector(s); };
   var demo = !CONFIG.ENDPOINT;
 
   var stato = {
-    giorno: null,      // id del giorno scelto nel modulo
-    giornoCucina: null // id del giorno mostrato in cucina
+    giorno: null,       // id del giorno scelto nel modulo
+    giornoCucina: null, // id del giorno mostrato in cucina
+    vista: "form",      // vista a schermo: form | conferma | cucina
+    erroreKey: null,    // errore del modulo, per ridisegnarlo cambiando lingua
+    erroreParams: null,
+    erroreCucina: null, // {k, p} errore della vista cucina
+    conferma: null,     // {p, azione} ultima conferma mostrata
+    cucinaBtn: "aggiorna"
   };
+
+  /* ---------- lingua ---------- */
+  function t(chiave, params) {
+    var dz = I18N[LANG] || I18N.it;
+    var v = dz[chiave];
+    if (v == null) v = I18N.it[chiave];
+    if (v == null) return chiave;
+    if (params) {
+      for (var k in params) {
+        if (Object.prototype.hasOwnProperty.call(params, k)) {
+          v = v.split("{" + k + "}").join(params[k]);
+        }
+      }
+    }
+    return v;
+  }
+  function linguaIniziale() {
+    var q = null;
+    try {
+      var m = /[?&]lang=(it|en)/i.exec(location.search || "");
+      if (m) q = m[1].toLowerCase();
+    } catch (e) { /* niente */ }
+    if (q) return q;
+    var salvata = leggiLS(K_LANG, null);
+    if (salvata === "it" || salvata === "en") return salvata;
+    var nav = "";
+    try { nav = String(navigator.language || navigator.userLanguage || "").toLowerCase(); } catch (e2) { nav = ""; }
+    return nav.indexOf("en") === 0 ? "en" : "it";
+  }
+  function impostaLingua(l) {
+    LANG = (l === "en") ? "en" : "it";
+    scriviLS(K_LANG, LANG);
+    applicaLingua();
+  }
+  function aggiornaTestata() {
+    var inCucina = stato.vista === "cucina";
+    $("#eyebrow").textContent = inCucina ? t("eyebrowCucina") : "";
+    $("#h1").innerHTML = inCucina ? t("h1Cucina") : t("h1Form");
+  }
+  // ritocca i testi della tendina senza ricostruirla (così non perde la scelta)
+  function aggiornaTestiNomi() {
+    var sel = $("#nome");
+    if (!sel || !sel.options.length) return;
+    if (sel.options[0].value === "") sel.options[0].textContent = t("scegliNome");
+    var opt = sel.querySelector('option[value="' + ALTRO + '"]');
+    if (opt) {
+      opt.textContent = t("nonInLista");
+      if (opt.parentNode && opt.parentNode.tagName === "OPTGROUP") opt.parentNode.label = t("gruppoAltro");
+    }
+  }
+  // ridisegna il modulo conservando scelte e note
+  function ridisegnaModulo() {
+    if (!stato.giorno) return;
+    var primo = sceltaDi("primo"), secondo = sceltaDi("secondo"), contorno = sceltaDi("contorno");
+    var note = $("#note").value;
+    disegnaGiorno(stato.giorno);
+    $("#note").value = note;
+    if (primo) seleziona("primo", primo);
+    if (secondo) seleziona("secondo", secondo);
+    if (contorno) seleziona("contorno", contorno);
+  }
+  function applicaLingua() {
+    document.documentElement.lang = LANG;
+    document.title = t("titlePagina");
+
+    var nodi = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodi.length; i++) nodi[i].innerHTML = t(nodi[i].getAttribute("data-i18n"));
+    var ph = document.querySelectorAll("[data-i18n-placeholder]");
+    for (var p = 0; p < ph.length; p++) ph[p].setAttribute("placeholder", t(ph[p].getAttribute("data-i18n-placeholder")));
+    var ar = document.querySelectorAll("[data-i18n-aria]");
+    for (var a = 0; a < ar.length; a++) ar[a].setAttribute("aria-label", t(ar[a].getAttribute("data-i18n-aria")));
+    var bt = document.querySelectorAll(".lingua button");
+    for (var b = 0; b < bt.length; b++) {
+      bt[b].setAttribute("aria-pressed", bt[b].getAttribute("data-lang") === LANG ? "true" : "false");
+    }
+
+    aggiornaTestata();
+    aggiornaTestiNomi();
+
+    var err = { k: stato.erroreKey, p: stato.erroreParams };
+    ridisegnaModulo();            // azzera l'errore: lo rimetto subito, senza scrollare
+    stato.erroreKey = err.k;
+    stato.erroreParams = err.p;
+    if (err.k) {
+      $("#erroreBox").textContent = t(err.k, err.p);
+      $("#erroreBox").hidden = false;
+    }
+
+    $("#aggiorna").textContent = t(stato.cucinaBtn);
+    if (stato.giornoCucina) {
+      costruisciGiorni($("#giorniCucina"), stato.giornoCucina, function (nuovo) {
+        stato.giornoCucina = nuovo;
+        caricaCucina();
+      });
+    }
+    if (datiCucina) renderCucina(datiCucina);
+    if (stato.erroreCucina) $("#erroreCucina").textContent = t(stato.erroreCucina.k, stato.erroreCucina.p);
+    if (stato.conferma) renderConferma(stato.conferma.p, stato.conferma.azione);
+  }
 
   /* ---------- utilità ---------- */
   function esc(s) {
@@ -474,10 +762,10 @@ const CONFIG = {
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     }).then(function (r) {
-      if (!r.ok) throw new Error("Il server ha risposto " + r.status);
+      if (!r.ok) throw new Error(t("netServer", { n: r.status }));
       return r.json();
     }).then(function (j) {
-      if (!j || !j.ok) throw new Error((j && j.errore) || "Risposta non valida dal foglio");
+      if (!j || !j.ok) throw new Error((j && j.errore) || t("netRisposta"));
       return j;
     });
   }
@@ -485,10 +773,10 @@ const CONFIG = {
     if (demo) return Promise.resolve(demoScarica(giorno));
     return fetch(CONFIG.ENDPOINT + "?giorno=" + encodeURIComponent(giorno))
       .then(function (r) {
-        if (!r.ok) throw new Error("Il server ha risposto " + r.status);
+        if (!r.ok) throw new Error(t("netServer", { n: r.status }));
         return r.json();
       }).then(function (j) {
-        if (!j || !j.ok) throw new Error((j && j.errore) || "Risposta non valida dal foglio");
+        if (!j || !j.ok) throw new Error((j && j.errore) || t("netRisposta"));
         return j;
       });
   }
@@ -530,7 +818,7 @@ const CONFIG = {
       if (!mappa[p.gruppo]) { mappa[p.gruppo] = []; gruppi.push(p.gruppo); }
       mappa[p.gruppo].push(p.nome);
     }
-    var html = '<option value="" disabled selected>Scegli il tuo nome…</option>';
+    var html = '<option value="" disabled selected>' + esc(t("scegliNome")) + '</option>';
     for (var g = 0; g < gruppi.length; g++) {
       html += '<optgroup label="' + esc(gruppi[g]) + '">';
       var lista = mappa[gruppi[g]];
@@ -539,7 +827,8 @@ const CONFIG = {
       }
       html += "</optgroup>";
     }
-    html += '<optgroup label="Altro"><option value="' + ALTRO + '">Non sono in lista…</option></optgroup>';
+    html += '<optgroup label="' + esc(t("gruppoAltro")) + '"><option value="' + ALTRO + '">' +
+      esc(t("nonInLista")) + "</option></optgroup>";
     sel.innerHTML = html;
 
     var ricordato = leggiLS(K_NOME, null);
@@ -577,7 +866,7 @@ const CONFIG = {
     var html = "";
     for (var i = 0; i < CONFIG.GIORNI.length; i++) {
       var g = CONFIG.GIORNI[i];
-      var coda = apertoDavvero(g) ? etichettaCoda(g) : "menu in arrivo";
+      var coda = apertoDavvero(g) ? etichettaCoda(g) : t("menuInArrivo");
       html += '<button type="button" class="giorno' + (apertoDavvero(g) ? "" : " chiuso") + '"' +
         ' data-id="' + esc(g.id) + '" aria-pressed="' + (g.id === attivo ? "true" : "false") + '">' +
         "<b>" + esc(etichettaCorta(g)) + "</b><small>" + esc(coda) + "</small></button>";
@@ -637,13 +926,13 @@ const CONFIG = {
     $("#menuAperto").hidden = !ok;
     $("#menuChiuso").hidden = ok;
     $("#invia").disabled = !ok;
-    $("#invia").textContent = ok ? "Mando l'ordine" : "Menu non ancora disponibile";
+    $("#invia").textContent = ok ? t("inviaOrdine") : t("menuNonDisponibile");
     if (ok) {
-      costruisciPiatti($("#primi"), "primo", g.primi, "Salto il primo");
-      costruisciPiatti($("#secondi"), "secondo", g.secondi, "Salto il secondo");
+      costruisciPiatti($("#primi"), "primo", g.primi, t("saltoPrimo"));
+      costruisciPiatti($("#secondi"), "secondo", g.secondi, t("saltoSecondo"));
       var haContorni = !!(g.contorni && g.contorni.length);
       $("#contorni").parentNode.hidden = !haContorni;
-      if (haContorni) costruisciPiatti($("#contorni"), "contorno", g.contorni, "Salto il contorno");
+      if (haContorni) costruisciPiatti($("#contorni"), "contorno", g.contorni, t("saltoContorno"));
       var ultima = leggiLS(K_ULTIMA, null);
       if (ultima && ultima.giorno === id) {
         seleziona("primo", ultima.primo);
@@ -655,27 +944,33 @@ const CONFIG = {
     nascondiErrore();
   }
 
-  function mostraErrore(msg) {
+  function mostraErrore(chiave, params) {
+    stato.erroreKey = chiave;
+    stato.erroreParams = params || null;
     var box = $("#erroreBox");
-    box.textContent = msg;
+    box.textContent = t(chiave, params);
     box.hidden = false;
     box.scrollIntoView({ block: "center", behavior: "smooth" });
   }
-  function nascondiErrore() { $("#erroreBox").hidden = true; }
+  function nascondiErrore() {
+    stato.erroreKey = null;
+    stato.erroreParams = null;
+    $("#erroreBox").hidden = true;
+  }
 
   /* ---------- invio ---------- */
   function inviaOrdine() {
     var g = giornoById(stato.giorno);
     if (!apertoDavvero(g)) return;
     var nome = nomeScelto();
-    if (!nome) { mostraErrore("Prima dimmi chi sei: scegli il nome in cima."); return; }
+    if (!nome) { mostraErrore("errNome"); return; }
     var primo = sceltaDi("primo"), secondo = sceltaDi("secondo");
-    if (!primo) { mostraErrore("Scegli un primo (o «Salto il primo»)."); return; }
-    if (!secondo) { mostraErrore("Scegli un secondo (o «Salto il secondo»)."); return; }
+    if (!primo) { mostraErrore("errPrimo"); return; }
+    if (!secondo) { mostraErrore("errSecondo"); return; }
     var contorno = SALTO;
     if (g.contorni && g.contorni.length) {
       contorno = sceltaDi("contorno");
-      if (!contorno) { mostraErrore("Scegli un contorno (o «Salto il contorno»)."); return; }
+      if (!contorno) { mostraErrore("errContorno"); return; }
     }
 
     var payload = {
@@ -691,7 +986,7 @@ const CONFIG = {
 
     var btn = $("#invia");
     btn.disabled = true;
-    btn.textContent = "Invio…";
+    btn.textContent = t("invioInCorso");
     nascondiErrore();
 
     invia(payload).then(function (r) {
@@ -700,22 +995,26 @@ const CONFIG = {
       mostraConferma(payload, r.azione);
     })["catch"](function (e) {
       btn.disabled = false;
-      btn.textContent = "Riprova a mandare";
-      mostraErrore("Non sono riuscito a mandare l'ordine (" + e.message + "). La scelta è rimasta qui: riprova fra un attimo o scrivi in chat.");
+      btn.textContent = t("riprovaInvio");
+      mostraErrore("errInvio", { e: e.message });
     });
   }
 
   /* ---------- conferma ---------- */
-  function mostraConferma(p, azione) {
+  function renderConferma(p, azione) {
     var g = giornoById(p.giorno);
-    $("#confTitolo").textContent = azione === "aggiornato" ? "Scelta aggiornata!" : "Ordinato!";
+    $("#confTitolo").textContent = azione === "aggiornato" ? t("confAggiornato") : t("confOrdinato");
     $("#confChi").textContent = p.nome + " · " + etichettaCorta(g);
     var righe =
-      '<div class="riga"><span class="k">Primo</span><span class="v">' + esc(p.primo === SALTO ? "Salto il primo" : p.primo) + "</span></div>" +
-      '<div class="riga"><span class="k">Secondo</span><span class="v">' + esc(p.secondo === SALTO ? "Salto il secondo" : p.secondo) + "</span></div>" +
-      '<div class="riga"><span class="k">Contorno</span><span class="v">' + esc(!p.contorno || p.contorno === SALTO ? "Salto il contorno" : p.contorno) + "</span></div>";
-    if (p.note) righe += '<div class="riga"><span class="k">Note</span><span class="v">' + esc(p.note) + "</span></div>";
+      '<div class="riga"><span class="k">' + esc(t("rigaPrimo")) + '</span><span class="v">' + esc(p.primo === SALTO ? t("saltoPrimo") : p.primo) + "</span></div>" +
+      '<div class="riga"><span class="k">' + esc(t("rigaSecondo")) + '</span><span class="v">' + esc(p.secondo === SALTO ? t("saltoSecondo") : p.secondo) + "</span></div>" +
+      '<div class="riga"><span class="k">' + esc(t("rigaContorno")) + '</span><span class="v">' + esc(!p.contorno || p.contorno === SALTO ? t("saltoContorno") : p.contorno) + "</span></div>";
+    if (p.note) righe += '<div class="riga"><span class="k">' + esc(t("rigaNote")) + '</span><span class="v">' + esc(p.note) + "</span></div>";
     $("#confRiepilogo").innerHTML = righe;
+  }
+  function mostraConferma(p, azione) {
+    stato.conferma = { p: p, azione: azione };
+    renderConferma(p, azione);
     vista("conferma");
   }
 
@@ -737,7 +1036,7 @@ const CONFIG = {
       html += '<div class="r' + (salto ? " muto" : "") + '"><span class="q">' + righe[i][1] + "</span>" +
         '<span class="n">' + esc(salto ? testoSalto : righe[i][0]) + "</span></div>";
     }
-    el.innerHTML = html || '<div class="vuoto">Ancora nessuna scelta</div>';
+    el.innerHTML = html || '<div class="vuoto">' + esc(t("nessunaScelta")) + "</div>";
   }
 
   var datiCucina = null;
@@ -745,11 +1044,26 @@ const CONFIG = {
   function caricaCucina() {
     var id = stato.giornoCucina;
     costruisciGiorni($("#giorniCucina"), id, function (nuovo) { stato.giornoCucina = nuovo; caricaCucina(); });
+    stato.erroreCucina = null;
     $("#erroreCucina").hidden = true;
-    $("#aggiorna").textContent = "Carico…";
+    stato.cucinaBtn = "carico";
+    $("#aggiorna").textContent = t("carico");
     scarica(id).then(function (d) {
       datiCucina = d;
-      $("#aggiorna").textContent = "Aggiorna";
+      stato.cucinaBtn = "aggiorna";
+      $("#aggiorna").textContent = t("aggiorna");
+      renderCucina(d);
+    })["catch"](function (e) {
+      stato.cucinaBtn = "riprova";
+      $("#aggiorna").textContent = t("riprova");
+      stato.erroreCucina = { k: "errCucina", p: { e: e.message } };
+      var box = $("#erroreCucina");
+      box.textContent = t("errCucina", { e: e.message });
+      box.hidden = false;
+    });
+  }
+
+  function renderCucina(d) {
       var risposte = d.risposte || [];
       var totale = CONFIG.PERSONE.length;
       var hanno = {}, inLista = {}, chips = "", note = "";
@@ -767,7 +1081,7 @@ const CONFIG = {
       $("#kMancano").textContent = mancanti.length;
       var fl = $("#fuoriLista");
       fl.hidden = extra.length === 0;
-      fl.textContent = extra.length ? ("Fuori lista: " + extra.join(", ") + " · le persone in lista sono " + totale) : "";
+      fl.textContent = extra.length ? t("fuoriLista", { chi: extra.join(", "), n: totale }) : "";
 
       for (var r = 0; r < risposte.length; r++) {
         chips += '<span class="chip">' + esc(risposte[r].nome) + "</span>";
@@ -775,22 +1089,16 @@ const CONFIG = {
           note += '<div class="nb"><b>' + esc(risposte[r].nome) + "</b>" + esc(risposte[r].note) + "</div>";
         }
       }
-      $("#chipsFatti").innerHTML = chips || '<span class="chip manca">Nessuno, per ora</span>';
+      $("#chipsFatti").innerHTML = chips || '<span class="chip manca">' + esc(t("nessunoPerOra")) + "</span>";
       var cm = "";
       for (var m = 0; m < mancanti.length; m++) cm += '<span class="chip manca">' + esc(mancanti[m]) + "</span>";
-      $("#chipsMancanti").innerHTML = cm || '<span class="chip">Hanno risposto tutti</span>';
-      $("#listaNote").innerHTML = note || '<div class="vuoto">Nessuna nota</div>';
+      $("#chipsMancanti").innerHTML = cm || '<span class="chip">' + esc(t("rispostoTutti")) + "</span>";
+      $("#listaNote").innerHTML = note || '<div class="vuoto">' + esc(t("nessunaNota")) + "</div>";
 
       var tot = d.totali || { primi: {}, secondi: {}, contorni: {} };
-      disegnaTotali($("#totPrimi"), tot.primi, "Salta il primo");
-      disegnaTotali($("#totSecondi"), tot.secondi, "Salta il secondo");
-      disegnaTotali($("#totContorni"), tot.contorni || {}, "Salta il contorno");
-    })["catch"](function (e) {
-      $("#aggiorna").textContent = "Riprova";
-      var box = $("#erroreCucina");
-      box.textContent = "Non riesco a leggere le risposte (" + e.message + "). Controlla la connessione e riprova.";
-      box.hidden = false;
-    });
+      disegnaTotali($("#totPrimi"), tot.primi, t("saltaPrimo"));
+      disegnaTotali($("#totSecondi"), tot.secondi, t("saltaSecondo"));
+      disegnaTotali($("#totContorni"), tot.contorni || {}, t("saltaContorno"));
   }
 
   function testoOrdine() {
@@ -819,22 +1127,22 @@ const CONFIG = {
   }
 
   function copiaOrdine() {
-    var t = testoOrdine();
-    if (!t) { toast("Prima carico i dati"); return; }
+    var testo = testoOrdine();
+    if (!testo) { toast(t("toastAspetta")); return; }
     function fallback() {
       var ta = document.createElement("textarea");
-      ta.value = t;
+      ta.value = testo;
       ta.setAttribute("readonly", "");
       ta.style.position = "fixed";
       ta.style.opacity = "0";
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand("copy"); toast("Ordine copiato"); }
-      catch (e) { toast("Copia a mano dal messaggio"); }
+      try { document.execCommand("copy"); toast(t("toastCopiato")); }
+      catch (e) { toast(t("toastCopiaMano")); }
       document.body.removeChild(ta);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(t).then(function () { toast("Ordine copiato"); })["catch"](fallback);
+      navigator.clipboard.writeText(testo).then(function () { toast(t("toastCopiato")); })["catch"](fallback);
     } else { fallback(); }
   }
 
@@ -855,17 +1163,12 @@ const CONFIG = {
 
   /* ---------- viste ---------- */
   function vista(quale) {
+    stato.vista = quale;
     $("#vistaForm").hidden = quale !== "form";
     $("#vistaConferma").hidden = quale !== "conferma";
     $("#vistaCucina").hidden = quale !== "cucina";
     $("#linkCucina").parentNode.hidden = quale === "cucina";
-    if (quale === "cucina") {
-      $("#eyebrow").textContent = "Per chi telefona alla trattoria";
-      $("#h1").innerHTML = "Riepilogo <em>cucina</em>";
-    } else {
-      $("#eyebrow").textContent = "";
-      $("#h1").innerHTML = "Cosa mangi <em>oggi?</em>";
-    }
+    aggiornaTestata();
     window.scrollTo(0, 0);
   }
 
@@ -887,6 +1190,14 @@ const CONFIG = {
     $("#badgeDemo").hidden = !demo;
     costruisciNomi();
     disegnaGiorno(giornoDiDefault());
+
+    var pulsantiLingua = document.querySelectorAll(".lingua button");
+    for (var i = 0; i < pulsantiLingua.length; i++) {
+      pulsantiLingua[i].addEventListener("click", function () {
+        impostaLingua(this.getAttribute("data-lang"));
+      });
+    }
+    impostaLingua(linguaIniziale());
 
     $("#invia").addEventListener("click", inviaOrdine);
     $("#cambia").addEventListener("click", function () {
