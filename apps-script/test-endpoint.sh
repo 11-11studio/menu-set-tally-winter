@@ -20,7 +20,7 @@ curl -s -L "${URL}?ping=1"
 echo -e "\n"
 
 echo "== 2) POST di prova (Test Claudio, ${GIORNO}) =="
-curl -s -L -X POST "${URL}" \
+curl -s -L "${URL}" \
   -H "Content-Type: text/plain;charset=utf-8" \
   -d "{\"giorno\":\"${GIORNO}\",\"nome\":\"Test Claudio\",\"gruppo\":\"Prova\",\"primo\":\"Gricia\",\"secondo\":\"—\",\"contorno\":\"Patate\",\"note\":\"riga di test, si può cancellare\",\"ts\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
 echo -e "\n"

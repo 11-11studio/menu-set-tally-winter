@@ -18,7 +18,8 @@ function pulisci_(valore) {
 /** Il foglio può trasformare "2026-09-08" in una data: riportiamolo sempre a testo AAAA-MM-GG. */
 function giornoTesto_(valore) {
   if (valore instanceof Date) {
-    return Utilities.formatDate(valore, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+    var tz = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+    return Utilities.formatDate(valore, tz, 'yyyy-MM-dd');
   }
   return String(valore).trim();
 }
@@ -109,13 +110,15 @@ function doPost(e) {
     }
 
     var azione;
+    // La cella del giorno va messa a testo PRIMA di scrivere, altrimenti Sheets la trasforma in data.
     if (rigaTrovata > 0) {
-      foglio.getRange(rigaTrovata, 1, 1, 9).setValues([[giorno, nome, gruppo, primo, secondo, contorno, note, ts, oraServer]]);
       azione = 'aggiornato';
     } else {
-      foglio.appendRow([giorno, nome, gruppo, primo, secondo, contorno, note, ts, oraServer]);
+      rigaTrovata = righe + 1;
       azione = 'inserito';
     }
+    foglio.getRange(rigaTrovata, 1).setNumberFormat('@');
+    foglio.getRange(rigaTrovata, 1, 1, 9).setValues([[giorno, nome, gruppo, primo, secondo, contorno, note, ts, oraServer]]);
 
     return rispondi_({ ok: true, azione: azione });
   } catch (errore) {
@@ -254,4 +257,14 @@ function rigeneraRiepilogo() {
   foglioRiepilogo.getRange(1, 1, righeOutput.length, 3).setValues(righeOutput);
   foglioRiepilogo.setFrozenRows(1);
   foglioRiepilogo.autoResizeColumns(1, 3);
+}
+
+/** Da eseguire a mano: cancella le righe di prova (nome che inizia con "Test"). */
+function cancellaRigheDiTest() {
+  var foglio = foglioRisposte_();
+  var righe = foglio.getLastRow();
+  for (var r = righe; r >= 2; r--) {
+    var nome = String(foglio.getRange(r, 2).getValue()).trim().toLowerCase();
+    if (nome.indexOf('test') === 0) foglio.deleteRow(r);
+  }
 }
