@@ -380,6 +380,18 @@ const CONFIG = {
     }
   ],
 
+  // Traduzioni dei piatti per la versione inglese (solo a video: al foglio e alla trattoria arriva l'italiano)
+  PIATTI_EN: {
+    "Risotto alla pescatora": "Seafood risotto",
+    "Gricia": "Gricia (pasta with guanciale and pecorino)",
+    "Fusilli tonno e melanzane": "Fusilli with tuna and aubergine",
+    "Orata in crosta di patate": "Sea bream in potato crust",
+    "Fettine alla pizzaiola": "Beef slices pizzaiola (tomato and oregano)",
+    "Insalata patate, gamberi e tonno": "Potato, prawn and tuna salad",
+    "Broccoli": "Broccoli",
+    "Patate": "Potatoes"
+  },
+
   PERSONE: [
     { nome: "Roberto Fratianni",       gruppo: "Produzione" },
     { nome: "Perla Navarra",           gruppo: "Produzione" },
@@ -879,12 +891,17 @@ const I18N = {
   }
 
   /* ---------- modulo: piatti ---------- */
+  // nome del piatto nella lingua corrente (il valore inviato resta sempre l'italiano)
+  function nomePiatto(p) {
+    if (LANG === "en" && CONFIG.PIATTI_EN && CONFIG.PIATTI_EN[p]) return CONFIG.PIATTI_EN[p];
+    return p;
+  }
   function costruisciPiatti(contenitore, gruppo, piatti, testoSalto) {
     var html = "";
     for (var i = 0; i < piatti.length; i++) {
       var p = piatti[i];
       var veg = /vegan/i.test(p) ? '<span class="veg">VEG</span>' : "";
-      var pulito = String(p).replace(/\s*\(vegano\)\s*/i, "");
+      var pulito = nomePiatto(String(p).replace(/\s*\(vegano\)\s*/i, ""));
       html += '<label class="piatto"><input type="radio" name="' + gruppo + '" value="' + esc(p) + '">' +
         '<span class="tick"></span><span class="nome">' + esc(pulito) + veg + "</span></label>";
     }
@@ -1006,9 +1023,9 @@ const I18N = {
     $("#confTitolo").textContent = azione === "aggiornato" ? t("confAggiornato") : t("confOrdinato");
     $("#confChi").textContent = p.nome + " · " + etichettaCorta(g);
     var righe =
-      '<div class="riga"><span class="k">' + esc(t("rigaPrimo")) + '</span><span class="v">' + esc(p.primo === SALTO ? t("saltoPrimo") : p.primo) + "</span></div>" +
-      '<div class="riga"><span class="k">' + esc(t("rigaSecondo")) + '</span><span class="v">' + esc(p.secondo === SALTO ? t("saltoSecondo") : p.secondo) + "</span></div>" +
-      '<div class="riga"><span class="k">' + esc(t("rigaContorno")) + '</span><span class="v">' + esc(!p.contorno || p.contorno === SALTO ? t("saltoContorno") : p.contorno) + "</span></div>";
+      '<div class="riga"><span class="k">' + esc(t("rigaPrimo")) + '</span><span class="v">' + esc(p.primo === SALTO ? t("saltoPrimo") : nomePiatto(p.primo)) + "</span></div>" +
+      '<div class="riga"><span class="k">' + esc(t("rigaSecondo")) + '</span><span class="v">' + esc(p.secondo === SALTO ? t("saltoSecondo") : nomePiatto(p.secondo)) + "</span></div>" +
+      '<div class="riga"><span class="k">' + esc(t("rigaContorno")) + '</span><span class="v">' + esc(!p.contorno || p.contorno === SALTO ? t("saltoContorno") : nomePiatto(p.contorno)) + "</span></div>";
     if (p.note) righe += '<div class="riga"><span class="k">' + esc(t("rigaNote")) + '</span><span class="v">' + esc(p.note) + "</span></div>";
     $("#confRiepilogo").innerHTML = righe;
   }
@@ -1034,7 +1051,7 @@ const I18N = {
     for (var i = 0; i < righe.length; i++) {
       var salto = righe[i][0] === SALTO;
       html += '<div class="r' + (salto ? " muto" : "") + '"><span class="q">' + righe[i][1] + "</span>" +
-        '<span class="n">' + esc(salto ? testoSalto : righe[i][0]) + "</span></div>";
+        '<span class="n">' + esc(salto ? testoSalto : nomePiatto(righe[i][0])) + "</span></div>";
     }
     el.innerHTML = html || '<div class="vuoto">' + esc(t("nessunaScelta")) + "</div>";
   }
