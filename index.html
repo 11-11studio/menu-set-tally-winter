@@ -247,9 +247,6 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
       <div class="sez">
         <h2><span class="num">6</span> Note</h2>
         <textarea id="note" placeholder="Allergie, «senza formaggio», «poco piccante»…"></textarea>
-        <div class="avviso">
-          <b>Allergie e intolleranze sono già segnalate alla trattoria</b> (Valeria Mazza: niente latticini, uova, insaccati · Perla Navarra: vegana). Se hai altro, scrivilo qui.
-        </div>
       </div>
     </div>
 
@@ -362,7 +359,6 @@ const CONFIG = {
       ],
       secondi: [
         "Orata in crosta di patate",
-        "Costine",
         "Fettine alla pizzaiola",
         "Insalata patate, gamberi e tonno",
         "Insalata o poke (vegano)"
@@ -407,7 +403,7 @@ const CONFIG = {
     { nome: "Josè",                    gruppo: "Cliente" },
     { nome: "Adela",                   gruppo: "Cliente" },
     { nome: "Vincenzo (videomaker)",   gruppo: "Cliente" },
-    { nome: "Marta (sarta)",           gruppo: "Cliente" },
+    { nome: "Marta",                   gruppo: "Cliente" },
     { nome: "Gianmarco",               gruppo: "Nero Studio" },
     { nome: "Riccardo",                gruppo: "Nero Studio" }
   ]
@@ -829,7 +825,6 @@ const CONFIG = {
       if (risposte[i].note) note.push(risposte[i].nome + ": " + risposte[i].note);
     }
     t += "NOTE — " + (note.length ? note.join(" · ") : "nessuna") + "\n";
-    t += "Allergie già segnalate: Valeria Mazza niente latticini, uova, insaccati · Perla Navarra vegana.\n";
     t += "Totale: " + risposte.length + " pasti.";
     return t;
   }
