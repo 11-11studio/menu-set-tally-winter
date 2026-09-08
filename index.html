@@ -101,7 +101,7 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
 #altroNome{margin-top:10px}
 
 /* ---- tab giorni ---- */
-.giorni{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.giorni{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .giorno{
   min-height:64px;display:flex;flex-direction:column;justify-content:center;gap:2px;
   padding:10px 12px;border:2px solid var(--bordo);border-radius:14px;background:#fff;
@@ -364,14 +364,6 @@ const CONFIG = {
         "Broccoli",
         "Patate"
       ]
-    },
-    {
-      id: "2026-09-09",
-      label: "Mercoledì 9 · DAY 02 Christmas",
-      aperto: false,          // menu in arrivo dalla trattoria
-      primi: [],
-      secondi: [],
-      contorni: []
     }
   ],
 
