@@ -6,13 +6,13 @@ Pagina web per far scegliere alla troupe primo/secondo del giorno (set 8-9 sette
 
 - `index.html` — la pagina statica: modulo per la troupe e vista Cucina, loghi già incorporati.
 - `apps-script/Code.gs` — il backend: riceve le scelte e le scrive su un Google Sheet.
-- `apps-script/test-endpoint.sh` — script per testare il Web App da terminale.
+- `apps-script/test-endpoint.sh` — script per testare il Web App da terminale (aggiunge una riga «Test Claudio»: poi lanciare `cancellaRigheDiTest` dall'editor Apps Script).
 - `assets/` — i loghi sorgente (11:11 e Tally Weijl), già incorporati in `index.html`: non serve caricarli su GitHub.
 - `crea-repo.sh` — script per creare il repo GitHub e pubblicarlo (vedi Passo 3).
 
 Tre cose da fare col browser, in ordine.
 
-## Passo 1 — Il foglio Google
+## Passo 1 — Il foglio Google (già fatto l'08/09/2026: foglio «Pasti set Tally Weijl WINTER» nel Drive di info@11-11stud.io, deploy versione 3)
 
 Con l'account **info@11-11stud.io**:
 
@@ -28,7 +28,7 @@ Con l'account **info@11-11stud.io**:
 
 **Importante:** ogni volta che modifichi `Code.gs`, l'URL `/exec` resta lo stesso ma serve comunque una nuova versione, altrimenti continua a girare il codice vecchio: **Deploy → Gestisci distribuzioni → matita (modifica) → Versione: Nuova versione → Distribuisci**.
 
-## Passo 2 — Incolla l'URL in index.html
+## Passo 2 — Incolla l'URL in index.html (già fatto: l'URL /exec è dentro index.html)
 
 Apri `index.html`, in cima trovi un blocco tipo:
 
@@ -49,40 +49,12 @@ Incolla l'URL copiato al Passo 1 tra le virgolette.
 
 Se invece vedi una pagina HTML di login Google, il deploy non è "Chiunque" — torna al Passo 1.
 
-## Passo 3 — GitHub Pages
+## Passo 3 — GitHub Pages (già fatto l'08/09/2026)
 
-Con l'account GitHub di **info@11-11stud.io**, crea un repo pubblico e caricaci i file (tutti tranne `assets/`, che serve solo come sorgente dei loghi già dentro `index.html`).
+Il repo esiste già sull'account GitHub **11-11studio**: <https://github.com/11-11studio/menu-set-tally-winter>, con GitHub Pages attivo su `main` / root.
+Il link della pagina è **https://11-11studio.github.io/menu-set-tally-winter/**. Consiglio: accorcialo o fanne un QR per mandarlo su WhatsApp alla troupe.
 
-**Il modo comodo:** lancia `crea-repo.sh` da questa cartella (menu-web/). Copia i file in `~/Sites/menu-set-tally-winter`, fa `git init`, il commit e crea il repo con `gh`. Prima serve essere loggati sull'account giusto:
-
-```bash
-gh auth status   # controlla chi è loggato
-gh auth login    # se serve cambiare account, sceglie info@11-11stud.io
-```
-
-Poi:
-
-```bash
-cd menu-web
-./crea-repo.sh
-```
-
-**Oppure a mano**, se preferisci:
-
-```bash
-mkdir -p ~/Sites/menu-set-tally-winter
-cd menu-web
-rsync -av --exclude 'assets/' --exclude 'crea-repo.sh' ./ ~/Sites/menu-set-tally-winter/
-cd ~/Sites/menu-set-tally-winter
-git init
-git add -A
-git commit -m "Prima versione: pagina menu set Tally Weijl WINTER"
-gh repo create menu-set-tally-winter --public --source=. --push
-```
-
-Poi su GitHub: **Settings → Pages → Deploy from branch → main / (root)**.
-
-Il link è `https://11-11studio.github.io/menu-set-tally-winter/`. Consiglio: accorcialo o fanne un QR per mandarlo su WhatsApp alla troupe.
+`crea-repo.sh` serve solo se un giorno vuoi rifare il repo da zero da terminale (richiede `gh auth login` sull'account 11-11studio).
 
 ## Come si aggiorna il menu di mercoledì
 
@@ -101,16 +73,9 @@ GIORNI: [
 
 Per mercoledì: metti i piatti nelle tre liste e cambia `aperto: false` in `aperto: true`. Senza contorni la sezione contorno sparisce da sola.
 
-Cambi i piatti del giorno che ti serve, salvi, fai commit e push:
+Per pubblicare la modifica **senza terminale**: su GitHub apri `index.html` → matita (Edit) → incolla il nuovo contenuto → **Commit changes**. Oppure **Add file → Upload files** e trascina il nuovo `index.html` sopra quello vecchio. In circa 1 minuto GitHub Pages aggiorna la pagina online.
 
-```bash
-cd ~/Sites/menu-set-tally-winter
-git add index.html
-git commit -m "Aggiorno il menu del 9 settembre"
-git push
-```
-
-In circa 1 minuto GitHub Pages aggiorna la pagina online.
+La copia di riferimento di `index.html` sta nel vault, in `11_11studio/Produzioni/2-TallyWeijl/06-Craft-e-catering/menu-web/`: modifica prima quella, poi caricala.
 
 ## Vista Cucina
 
