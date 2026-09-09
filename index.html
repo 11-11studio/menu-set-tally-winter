@@ -166,6 +166,15 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
 .piede a{color:rgba(255,255,255,.8);font-size:13px;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:2px}
 .badge-demo{display:inline-block;margin:0 0 14px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em}
 
+/* ---- instagram ---- */
+.ig{margin:22px auto 0;max-width:420px;padding:20px 18px 22px;border-radius:20px;text-align:center;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+.ig-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--rosa);font-weight:700;margin-bottom:8px}
+.ig-testo{margin:0 0 14px;color:rgba(255,255,255,.88);font-size:14px;line-height:1.45}
+.ig-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;
+  background:var(--rosa);color:#1A1A1A;font-weight:800;font-size:14px;text-decoration:none;letter-spacing:.02em}
+.ig-btn:active{transform:translateY(1px)}
+
 /* ---- conferma ---- */
 .ok-icon{width:62px;height:62px;margin:2px auto 14px;border-radius:50%;background:var(--rosa);display:flex;align-items:center;justify-content:center}
 .ok-icon::after{content:"";width:14px;height:26px;border-right:4px solid #fff;border-bottom:4px solid #fff;transform:rotate(42deg);margin-top:-6px}
@@ -350,6 +359,16 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
     <a href="#cucina" id="linkCucina" data-i18n="linkCucina">Riepilogo cucina →</a>
   </div>
 
+  <!-- ============ INSTAGRAM 11:11 ============ -->
+  <aside class="ig">
+    <div class="ig-eyebrow">11:11 Studio</div>
+    <p class="ig-testo" data-i18n="igTesto">Sazio? Ora nutri anche il feed: su Instagram c'è il dietro le quinte di questo set, e magari ci sei anche tu.</p>
+    <a class="ig-btn" href="https://www.instagram.com/11_11stud.io" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg>
+      <span data-i18n="igBottone">Seguici · @11_11stud.io</span>
+    </a>
+  </aside>
+
 </div>
 
 <script>
@@ -533,6 +552,8 @@ const I18N = {
     confAvviso: "Puoi cambiare idea fino alle <b>10:30</b>, rimandando il modulo.",
     cambiaScelta: "Cambia scelta",
     linkCucina: "Riepilogo cucina →",
+    igTesto: "Sazio? Ora nutri anche il feed: su Instagram c'è il dietro le quinte di questo set, e magari ci sei anche tu.",
+    igBottone: "Seguici · @11_11stud.io",
 
     cucinaTitolo: "Riepilogo cucina",
     kpiRisposte: "risposte",
@@ -610,6 +631,8 @@ const I18N = {
     confAvviso: "You can change your mind until <b>10:30</b> — just send the form again.",
     cambiaScelta: "Change my choice",
     linkCucina: "Kitchen summary →",
+    igTesto: "Full? Now feed your feed too: the behind-the-scenes of this shoot is on Instagram, and you might be in it.",
+    igBottone: "Follow us · @11_11stud.io",
 
     cucinaTitolo: "Kitchen summary",
     kpiRisposte: "answers",
@@ -687,6 +710,8 @@ const I18N = {
     confAvviso: "Puedes cambiar de idea hasta las <b>10:30</b>, volviendo a enviar el formulario.",
     cambiaScelta: "Cambiar elección",
     linkCucina: "Resumen cocina →",
+    igTesto: "¿Lleno? Ahora alimenta también tu feed: el detrás de cámaras de este rodaje está en Instagram, y a lo mejor sales tú.",
+    igBottone: "Síguenos · @11_11stud.io",
 
     cucinaTitolo: "Resumen cocina",
     kpiRisposte: "respuestas",
