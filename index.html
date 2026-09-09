@@ -108,6 +108,12 @@ select:focus,input[type=text]:focus,textarea:focus{border-color:var(--blu)}
   border-right:2.5px solid var(--blu);border-bottom:2.5px solid var(--blu);transform:rotate(45deg);pointer-events:none}
 textarea{min-height:88px;resize:vertical;line-height:1.4}
 
+/* ---- nome e cognome ---- */
+.nomi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.nomi{grid-template-columns:1fr}}
+.campo{display:block}
+.campo span{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blu);margin:0 0 6px 4px}
+
 /* ---- tab giorni ---- */
 .giorni{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .giorno{
@@ -127,7 +133,9 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
   min-height:56px;padding:12px 14px;border:2px solid var(--bordo);border-radius:14px;background:#fff;cursor:pointer}
 .piatto input{position:absolute;opacity:0;width:0;height:0}
 .tick{flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--bordo);background:#fff;position:relative;transition:none}
+.piatto .testo{display:flex;flex-direction:column;gap:3px;min-width:0}
 .piatto .nome{font-size:15px;font-weight:600;line-height:1.25}
+.piatto .desc{font-size:12.5px;line-height:1.3;color:var(--testo-muto);font-weight:500}
 .piatto .veg{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:#E8F5E9;color:#256B2C;font-size:10px;font-weight:800;letter-spacing:.08em;vertical-align:2px}
 .piatto.salto .nome{color:var(--testo-muto);font-weight:600}
 .piatto.on{border-color:var(--rosa);background:var(--rosa-chiaro)}
@@ -219,6 +227,7 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
     <div class="lingua" role="group" aria-label="Lingua / Language">
       <button type="button" data-lang="it" aria-pressed="true">IT</button>
       <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
     </div>
   </header>
 
@@ -229,10 +238,14 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
 
     <div class="sez">
       <h2><span class="num">1</span> <span data-i18n="sez1">Chi sei</span></h2>
-      <input type="text" id="nome" placeholder="Scrivi il tuo nome e cognome" data-i18n-placeholder="phNomeLibero"
-             autocomplete="name" autocapitalize="words" autocorrect="off" spellcheck="false" maxlength="80"
-             aria-label="Scrivi il tuo nome e cognome" data-i18n-aria="phNomeLibero">
-      <p class="hint" style="margin-top:8px" data-i18n="hintNome">Per esteso, nome e cognome: così la cucina sa chi ha risposto.</p>
+      <div class="nomi">
+        <label class="campo"><span data-i18n="lblNome">Nome</span>
+          <input type="text" id="nome" placeholder="Il tuo nome" data-i18n-placeholder="phNome"
+                 autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" maxlength="40"></label>
+        <label class="campo"><span data-i18n="lblCognome">Cognome</span>
+          <input type="text" id="cognome" placeholder="Il tuo cognome" data-i18n-placeholder="phCognome"
+                 autocomplete="family-name" autocapitalize="words" autocorrect="off" spellcheck="false" maxlength="40"></label>
+      </div>
     </div>
 
     <div class="sez">
@@ -382,19 +395,55 @@ const CONFIG = {
     }
   ],
 
-  // Traduzioni dei piatti per la versione inglese (solo a video: al foglio e alla trattoria arriva l'italiano)
-  PIATTI_EN: {
-    "Farfalle peperoni e feta": "Farfalle with peppers and feta",
-    "Conchiglie cotto e piselli": "Conchiglie with cooked ham and peas",
-    "Carbonara": "Carbonara (pasta with guanciale, egg and pecorino)",
-    "Pollo alla cacciatora": "Chicken cacciatora (braised with tomato and herbs)",
-    "Saltimbocca alla romana": "Saltimbocca alla romana (veal with prosciutto and sage)",
-    "Involtini di melanzane (con pomodori secchi e rucola)": "Aubergine rolls (with sun-dried tomatoes and rocket)",
-    "Broccoli": "Broccoli",
-    "Cicoria": "Chicory (sautéed greens)",
-    "Spinaci": "Spinach",
-    "Fagiolini": "Green beans",
-    "Patate": "Potatoes"
+  // Piatti: nome nelle altre lingue e descrizione breve in tutte (solo a video: al foglio e alla trattoria arriva il nome italiano)
+  PIATTI: {
+    "Farfalle peperoni e feta": {
+      nome: { en: "Farfalle with peppers and feta", es: "Farfalle con pimientos y feta" },
+      desc: { it: "pasta a farfalla con peperoni saltati e feta sbriciolata",
+              en: "bow-tie pasta with sautéed peppers and crumbled feta cheese",
+              es: "pasta en forma de lazo con pimientos salteados y queso feta desmenuzado" } },
+    "Conchiglie cotto e piselli": {
+      nome: { en: "Conchiglie with ham and peas", es: "Conchiglie con jamón cocido y guisantes" },
+      desc: { it: "pasta a conchiglia con prosciutto cotto e piselli",
+              en: "shell-shaped pasta with cooked ham and peas",
+              es: "pasta en forma de concha con jamón cocido y guisantes" } },
+    "Carbonara": {
+      nome: { en: "Carbonara", es: "Carbonara" },
+      desc: { it: "pasta con guanciale croccante, uovo e pecorino",
+              en: "pasta with crispy guanciale (cured pork cheek), egg and pecorino cheese",
+              es: "pasta con guanciale (papada de cerdo curada) crujiente, huevo y queso pecorino" } },
+    "Pollo alla cacciatora": {
+      nome: { en: "Chicken cacciatora", es: "Pollo a la cazadora" },
+      desc: { it: "pollo in padella cotto piano con vino ed erbe, alla maniera romana",
+              en: "chicken braised the Roman way, slow-cooked with wine and herbs",
+              es: "pollo guisado a la romana, cocinado a fuego lento con vino y hierbas" } },
+    "Involtini di melanzane (con pomodori secchi e rucola)": {
+      nome: { en: "Aubergine rolls", es: "Rollitos de berenjena" },
+      desc: { it: "fette di melanzana arrotolate, ripiene di pomodori secchi e rucola",
+              en: "rolled aubergine (eggplant) slices filled with sun-dried tomatoes and rocket",
+              es: "rollitos de berenjena rellenos de tomates secos y rúcula" } },
+    "Saltimbocca alla romana": {
+      nome: { en: "Saltimbocca alla romana", es: "Saltimbocca a la romana" },
+      desc: { it: "fettine di vitello con prosciutto crudo e salvia, sfumate al vino bianco",
+              en: "veal escalopes topped with prosciutto and sage, finished in white wine",
+              es: "escalopes de ternera con jamón crudo y salvia, al vino blanco" } },
+    "Broccoli": {
+      nome: { en: "Broccoli", es: "Brócoli" },
+      desc: { it: "", en: "", es: "" } },
+    "Cicoria": {
+      nome: { en: "Chicory greens", es: "Achicoria" },
+      desc: { it: "verdura a foglia dal gusto amarognolo, tipica romana",
+              en: "leafy bitter greens, a Roman classic",
+              es: "verdura de hoja de sabor amargo, típica de Roma" } },
+    "Spinaci": {
+      nome: { en: "Spinach", es: "Espinacas" },
+      desc: { it: "", en: "", es: "" } },
+    "Fagiolini": {
+      nome: { en: "Green beans", es: "Judías verdes" },
+      desc: { it: "", en: "", es: "" } },
+    "Patate": {
+      nome: { en: "Potatoes", es: "Patatas" },
+      desc: { it: "", en: "", es: "" } }
   },
 
   PERSONE: [
@@ -430,7 +479,7 @@ const CONFIG = {
 /* ===================== fine configurazione ========================== */
 
 /* =====================================================================
-   TESTI — italiano e inglese. Si modifica solo qui dentro.
+   TESTI — italiano, inglese e spagnolo. Si modifica solo qui dentro.
    ---------------------------------------------------------------------
    I nomi dei piatti e le etichette dei giorni restano in italiano in
    entrambe le lingue (è il menu della trattoria), e così il testo di
@@ -447,11 +496,10 @@ const I18N = {
     badgeDemo: "DEMO · le risposte restano solo su questo telefono",
 
     sez1: "Chi sei",
-    ariaNome: "Scegli il tuo nome",
-    scegliNome: "Scegli il tuo nome…",
-    gruppoAltro: "Altro",
-    nonInLista: "Non sono in lista…",
-    phNomeLibero: "Scrivi il tuo nome e cognome",
+    lblNome: "Nome",
+    lblCognome: "Cognome",
+    phNome: "Il tuo nome",
+    phCognome: "Il tuo cognome",
     sez2: "Quando",
     sez3: "Il primo",
     sez4: "Il secondo",
@@ -470,8 +518,7 @@ const I18N = {
     riprovaInvio: "Riprova a mandare",
     menuNonDisponibile: "Menu non ancora disponibile",
 
-    errNome: "Prima dimmi chi sei: scrivi nome e cognome in cima.",
-    hintNome: "Per esteso, nome e cognome: così la cucina sa chi ha risposto.",
+    errNome: "Prima dimmi chi sei: compila nome e cognome in cima.",
     errPrimo: "Scegli un primo (o «Salto il primo»).",
     errSecondo: "Scegli un secondo (o «Salto il secondo»).",
     errContorno: "Scegli un contorno (o «Salto il contorno»).",
@@ -526,11 +573,10 @@ const I18N = {
     badgeDemo: "DEMO · answers stay on this phone only",
 
     sez1: "Who you are",
-    ariaNome: "Pick your name",
-    scegliNome: "Pick your name…",
-    gruppoAltro: "Other",
-    nonInLista: "I'm not on the list…",
-    phNomeLibero: "Type your first and last name",
+    lblNome: "First name",
+    lblCognome: "Last name",
+    phNome: "Your first name",
+    phCognome: "Your last name",
     sez2: "When",
     sez3: "First course",
     sez4: "Main course",
@@ -549,8 +595,7 @@ const I18N = {
     riprovaInvio: "Try sending again",
     menuNonDisponibile: "Menu not available yet",
 
-    errNome: "First tell me who you are: type your first and last name at the top.",
-    hintNome: "In full, first and last name: that's how the kitchen knows who answered.",
+    errNome: "First tell me who you are: fill in first and last name at the top.",
     errPrimo: "Pick a first course (or “Skip the first course”).",
     errSecondo: "Pick a main (or “Skip the main”).",
     errContorno: "Pick a side (or “Skip the side”).",
@@ -594,6 +639,83 @@ const I18N = {
     toastAspetta: "Let me load the data first",
     netServer: "the server answered {n}",
     netRisposta: "invalid answer from the sheet"
+  },
+
+  es: {
+    titlePagina: "¿Qué comes hoy? · Tally Weijl WINTER · 11:11 Studio",
+    h1Form: "¿Qué comes <em>hoy?</em>",
+    h1Cucina: "Resumen <em>cocina</em>",
+    eyebrowCucina: "Para quien llama a la trattoria",
+    sotto: "WINTER · 8–9 de septiembre de 2026 · Nero Studio",
+    badgeDemo: "DEMO · las respuestas se quedan solo en este teléfono",
+
+    sez1: "Quién eres",
+    lblNome: "Nombre",
+    lblCognome: "Apellido",
+    phNome: "Tu nombre",
+    phCognome: "Tu apellido",
+    sez2: "Cuándo",
+    sez3: "El primero",
+    sez4: "El segundo",
+    sez5: "La guarnición",
+    sez6: "Notas",
+    phNote: "Alergias, «sin queso», «poco picante»…",
+
+    saltoPrimo: "Paso del primero",
+    saltoSecondo: "Paso del segundo",
+    saltoContorno: "Paso de la guarnición",
+    menuInArrivo: "menú en camino",
+    menuChiuso: "El menú del miércoles está en camino: te lo mandamos en cuanto lo pase la trattoria",
+
+    inviaOrdine: "Envío mi pedido",
+    invioInCorso: "Enviando…",
+    riprovaInvio: "Vuelve a intentar enviar",
+    menuNonDisponibile: "Menú todavía no disponible",
+
+    errNome: "Primero dime quién eres: rellena nombre y apellido arriba.",
+    errPrimo: "Elige un primero (o «Paso del primero»).",
+    errSecondo: "Elige un segundo (o «Paso del segundo»).",
+    errContorno: "Elige una guarnición (o «Paso de la guarnición»).",
+    errInvio: "No he podido enviar tu pedido ({e}). Tu elección sigue aquí: inténtalo de nuevo en un momento o escribe en el chat.",
+
+    confOrdinato: "¡Pedido!",
+    confAggiornato: "¡Elección actualizada!",
+    rigaPrimo: "Primero",
+    rigaSecondo: "Segundo",
+    rigaContorno: "Guarnición",
+    rigaNote: "Notas",
+    confAvviso: "Puedes cambiar de idea hasta las <b>10:30</b>, volviendo a enviar el formulario.",
+    cambiaScelta: "Cambiar elección",
+    linkCucina: "Resumen cocina →",
+
+    cucinaTitolo: "Resumen cocina",
+    kpiRisposte: "respuestas",
+    kpiMancano: "faltan",
+    fuoriLista: "Fuera de la lista: {chi} · en la lista hay {n} personas",
+    totPrimi: "Primeros",
+    totSecondi: "Segundos",
+    totContorni: "Guarniciones",
+    saltaPrimo: "Sin primero",
+    saltaSecondo: "Sin segundo",
+    saltaContorno: "Sin guarnición",
+    nessunaScelta: "Todavía sin elecciones",
+    titoloNote: "Notas",
+    nessunaNota: "Sin notas",
+    hannoRisposto: "Ya han respondido",
+    ancoraNiente: "Todavía faltan",
+    nessunoPerOra: "Nadie, por ahora",
+    rispostoTutti: "Han respondido todos",
+    aggiorna: "Actualizar",
+    carico: "Cargando…",
+    riprova: "Reintentar",
+    copiaOrdine: "Copiar pedido",
+    tornaMenu: "Volver al menú",
+    errCucina: "No consigo leer las respuestas ({e}). Revisa la conexión e inténtalo de nuevo.",
+    toastCopiato: "Pedido copiado",
+    toastCopiaMano: "Cópialo a mano desde el mensaje",
+    toastAspetta: "Primero cargo los datos",
+    netServer: "el servidor respondió {n}",
+    netRisposta: "respuesta no válida de la hoja"
   }
 };
 /* ========================= fine testi =============================== */
@@ -641,18 +763,20 @@ const I18N = {
   function linguaIniziale() {
     var q = null;
     try {
-      var m = /[?&]lang=(it|en)/i.exec(location.search || "");
+      var m = /[?&]lang=(it|en|es)/i.exec(location.search || "");
       if (m) q = m[1].toLowerCase();
     } catch (e) { /* niente */ }
     if (q) return q;
     var salvata = leggiLS(K_LANG, null);
-    if (salvata === "it" || salvata === "en") return salvata;
+    if (salvata === "it" || salvata === "en" || salvata === "es") return salvata;
     var nav = "";
     try { nav = String(navigator.language || navigator.userLanguage || "").toLowerCase(); } catch (e2) { nav = ""; }
-    return nav.indexOf("en") === 0 ? "en" : "it";
+    if (nav.indexOf("en") === 0) return "en";
+    if (nav.indexOf("es") === 0) return "es";
+    return "it";
   }
   function impostaLingua(l) {
-    LANG = (l === "en") ? "en" : "it";
+    LANG = (l === "en" || l === "es") ? l : "it";
     scriviLS(K_LANG, LANG);
     applicaLingua();
   }
@@ -847,13 +971,23 @@ const I18N = {
 
   /* ---------- modulo: nome scritto a mano ---------- */
   function costruisciNomi() {
-    var campo = $("#nome");
-    var ricordato = leggiLS(K_NOME, null);
-    if (ricordato && !campo.value) campo.value = ricordato;
-    campo.addEventListener("input", function () {
-      if (this.value.trim()) scriviLS(K_NOME, this.value.trim());
-    });
-    campo.addEventListener("blur", function () { this.value = pulisciNome(this.value); });
+    var campi = [$("#nome"), $("#cognome")];
+    var ricordato = leggiLS(K_NOME, null);   // "Nome|Cognome"
+    if (ricordato) {
+      var pezzi = String(ricordato).split("|");
+      if (pezzi.length === 2) {
+        if (!campi[0].value) campi[0].value = pezzi[0];
+        if (!campi[1].value) campi[1].value = pezzi[1];
+      }
+    }
+    for (var i = 0; i < campi.length; i++) {
+      campi[i].addEventListener("input", ricordaNome);
+      campi[i].addEventListener("blur", function () { this.value = pulisciNome(this.value); });
+    }
+  }
+  function ricordaNome() {
+    var n = pulisciNome($("#nome").value), c = pulisciNome($("#cognome").value);
+    if (n || c) scriviLS(K_NOME, n + "|" + c);
   }
   // spazi doppi via, iniziali maiuscole se è tutto minuscolo o tutto maiuscolo
   function pulisciNome(v) {
@@ -863,13 +997,17 @@ const I18N = {
     }
     return v;
   }
+  // "Nome Cognome" da mandare al foglio (le due caselle unite)
   function nomeScelto() {
-    return pulisciNome($("#nome").value);
+    var n = pulisciNome($("#nome").value), c = pulisciNome($("#cognome").value);
+    return (n + " " + c).trim();
   }
-  // nome e cognome: almeno due parole di due lettere
-  function nomeCompleto(nome) {
-    var parole = String(nome || "").split(" ").filter(function (w) { return w.replace(/[^\wÀ-ÿ]/g, "").length >= 2; });
-    return parole.length >= 2;
+  // servono tutte e due le caselle, almeno due lettere ciascuna
+  function nomeCompleto() {
+    var ok = function (v) { return pulisciNome(v).replace(/[^\wÀ-ÿ]/g, "").length >= 2; };
+    if (!ok($("#nome").value)) { $("#nome").focus(); return false; }
+    if (!ok($("#cognome").value)) { $("#cognome").focus(); return false; }
+    return true;
   }
 
   /* ---------- modulo: giorni ---------- */
@@ -892,17 +1030,26 @@ const I18N = {
   /* ---------- modulo: piatti ---------- */
   // nome del piatto nella lingua corrente (il valore inviato resta sempre l'italiano)
   function nomePiatto(p) {
-    if (LANG === "en" && CONFIG.PIATTI_EN && CONFIG.PIATTI_EN[p]) return CONFIG.PIATTI_EN[p];
+    var v = CONFIG.PIATTI && CONFIG.PIATTI[p];
+    if (v && LANG !== "it" && v.nome && v.nome[LANG]) return v.nome[LANG];
     return p;
+  }
+  // descrizione breve nella lingua corrente ("" se non c'è)
+  function descPiatto(p) {
+    var v = CONFIG.PIATTI && CONFIG.PIATTI[p];
+    if (!v || !v.desc) return "";
+    return v.desc[LANG] || v.desc.it || "";
   }
   function costruisciPiatti(contenitore, gruppo, piatti, testoSalto) {
     var html = "";
     for (var i = 0; i < piatti.length; i++) {
       var p = piatti[i];
       var veg = /vegan/i.test(p) ? '<span class="veg">VEG</span>' : "";
-      var pulito = nomePiatto(String(p).replace(/\s*\(vegano\)\s*/i, ""));
+      var chiave = String(p).replace(/\s*\(vegano\)\s*/i, "");
+      var pulito = nomePiatto(chiave), d = descPiatto(chiave);
       html += '<label class="piatto"><input type="radio" name="' + gruppo + '" value="' + esc(p) + '">' +
-        '<span class="tick"></span><span class="nome">' + esc(pulito) + veg + "</span></label>";
+        '<span class="tick"></span><span class="testo"><span class="nome">' + esc(pulito) + veg + "</span>" +
+        (d ? '<span class="desc">' + esc(d) + "</span>" : "") + "</span></label>";
     }
     html += '<label class="piatto salto"><input type="radio" name="' + gruppo + '" value="' + SALTO + '">' +
       '<span class="tick"></span><span class="nome">' + esc(testoSalto) + "</span></label>";
@@ -979,7 +1126,7 @@ const I18N = {
     var g = giornoById(stato.giorno);
     if (!apertoDavvero(g)) return;
     var nome = nomeScelto();
-    if (!nome || !nomeCompleto(nome)) { mostraErrore("errNome"); $("#nome").focus(); return; }
+    if (!nomeCompleto()) { mostraErrore("errNome"); return; }
     var primo = sceltaDi("primo"), secondo = sceltaDi("secondo");
     if (!primo) { mostraErrore("errPrimo"); return; }
     if (!secondo) { mostraErrore("errSecondo"); return; }
@@ -1006,7 +1153,7 @@ const I18N = {
     nascondiErrore();
 
     invia(payload).then(function (r) {
-      scriviLS(K_NOME, nome);
+      ricordaNome();
       scriviLS(K_ULTIMA, payload);
       mostraConferma(payload, r.azione);
     })["catch"](function (e) {
