@@ -107,7 +107,6 @@ select:focus,input[type=text]:focus,textarea:focus{border-color:var(--blu)}
 .sel::after{content:"";position:absolute;right:18px;top:50%;width:9px;height:9px;margin-top:-7px;
   border-right:2.5px solid var(--blu);border-bottom:2.5px solid var(--blu);transform:rotate(45deg);pointer-events:none}
 textarea{min-height:88px;resize:vertical;line-height:1.4}
-#altroNome{margin-top:10px}
 
 /* ---- tab giorni ---- */
 .giorni{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
@@ -230,10 +229,10 @@ textarea{min-height:88px;resize:vertical;line-height:1.4}
 
     <div class="sez">
       <h2><span class="num">1</span> <span data-i18n="sez1">Chi sei</span></h2>
-      <div class="sel">
-        <select id="nome" aria-label="Scegli il tuo nome" data-i18n-aria="ariaNome"></select>
-      </div>
-      <input type="text" id="altroNome" placeholder="Scrivi il tuo nome e cognome" data-i18n-placeholder="phNomeLibero" hidden>
+      <input type="text" id="nome" placeholder="Scrivi il tuo nome e cognome" data-i18n-placeholder="phNomeLibero"
+             autocomplete="name" autocapitalize="words" autocorrect="off" spellcheck="false" maxlength="80"
+             aria-label="Scrivi il tuo nome e cognome" data-i18n-aria="phNomeLibero">
+      <p class="hint" style="margin-top:8px" data-i18n="hintNome">Per esteso, nome e cognome: così la cucina sa chi ha risposto.</p>
     </div>
 
     <div class="sez">
@@ -471,7 +470,8 @@ const I18N = {
     riprovaInvio: "Riprova a mandare",
     menuNonDisponibile: "Menu non ancora disponibile",
 
-    errNome: "Prima dimmi chi sei: scegli il nome in cima.",
+    errNome: "Prima dimmi chi sei: scrivi nome e cognome in cima.",
+    hintNome: "Per esteso, nome e cognome: così la cucina sa chi ha risposto.",
     errPrimo: "Scegli un primo (o «Salto il primo»).",
     errSecondo: "Scegli un secondo (o «Salto il secondo»).",
     errContorno: "Scegli un contorno (o «Salto il contorno»).",
@@ -549,7 +549,8 @@ const I18N = {
     riprovaInvio: "Try sending again",
     menuNonDisponibile: "Menu not available yet",
 
-    errNome: "First tell me who you are: pick your name at the top.",
+    errNome: "First tell me who you are: type your first and last name at the top.",
+    hintNome: "In full, first and last name: that's how the kitchen knows who answered.",
     errPrimo: "Pick a first course (or “Skip the first course”).",
     errSecondo: "Pick a main (or “Skip the main”).",
     errContorno: "Pick a side (or “Skip the side”).",
@@ -601,7 +602,6 @@ const I18N = {
   "use strict";
 
   var SALTO = "—";                 // trattino lungo: "salto il piatto"
-  var ALTRO = "__altro__";
   var K_NOME = "tw_menu_nome";
   var K_DEMO = "tw_menu_demo";
   var K_ULTIMA = "tw_menu_ultima";
@@ -662,16 +662,7 @@ const I18N = {
     $("#h1").innerHTML = inCucina ? t("h1Cucina") : t("h1Form");
   }
   // ritocca i testi della tendina senza ricostruirla (così non perde la scelta)
-  function aggiornaTestiNomi() {
-    var sel = $("#nome");
-    if (!sel || !sel.options.length) return;
-    if (sel.options[0].value === "") sel.options[0].textContent = t("scegliNome");
-    var opt = sel.querySelector('option[value="' + ALTRO + '"]');
-    if (opt) {
-      opt.textContent = t("nonInLista");
-      if (opt.parentNode && opt.parentNode.tagName === "OPTGROUP") opt.parentNode.label = t("gruppoAltro");
-    }
-  }
+  function aggiornaTestiNomi() { /* il nome è un campo di testo: placeholder e hint li aggiorna applicaTesti */ }
   // ridisegna il modulo conservando scelte e note
   function ridisegnaModulo() {
     if (!stato.giorno) return;
@@ -756,11 +747,37 @@ const I18N = {
     var p = String(g.label).split(" · ");
     return p.length > 1 ? p.slice(1).join(" · ") : "";
   }
-  function gruppoDi(nome) {
+  // Il nome è scritto a mano: lo si confronta con la lista PERSONE senza badare a maiuscole, accenti e ordine.
+  function normalizzaNome(nome) {
+    var s = String(nome || "").toLowerCase();
+    try { s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) {}
+    return s.replace(/['’`]/g, " ").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+  }
+  function tokens(nome) {
+    var n = normalizzaNome(nome);
+    return n ? n.split(" ") : [];
+  }
+  // persona della lista che corrisponde al nome scritto (o null): servono tutte le parole del nome
+  // "base" (fuori parentesi) e vince chi ha più parole in comune.
+  function trovaPersona(nome) {
+    var scritti = tokens(nome);
+    if (!scritti.length) return null;
+    var migliore = null, punteggio = 0;
     for (var i = 0; i < CONFIG.PERSONE.length; i++) {
-      if (CONFIG.PERSONE[i].nome === nome) return CONFIG.PERSONE[i].gruppo;
+      var p = CONFIG.PERSONE[i];
+      var base = tokens(p.nome.replace(/\(.*?\)/g, ""));
+      var tutti = tokens(p.nome);
+      var ok = base.length > 0, comuni = 0, k;
+      for (k = 0; k < base.length; k++) { if (scritti.indexOf(base[k]) < 0) { ok = false; break; } }
+      if (!ok) continue;
+      for (k = 0; k < tutti.length; k++) { if (scritti.indexOf(tutti[k]) >= 0) comuni++; }
+      if (comuni > punteggio) { punteggio = comuni; migliore = p; }
     }
-    return "Altro";
+    return migliore;
+  }
+  function gruppoDi(nome) {
+    var p = trovaPersona(nome);
+    return p ? p.gruppo : "Altro";
   }
   function leggiLS(k, fallback) {
     try {
@@ -828,55 +845,31 @@ const I18N = {
     return { ok: true, giorno: giorno, risposte: risposte, totali: totali };
   }
 
-  /* ---------- modulo: tendina nomi ---------- */
+  /* ---------- modulo: nome scritto a mano ---------- */
   function costruisciNomi() {
-    var sel = $("#nome"), gruppi = [], mappa = {};
-    for (var i = 0; i < CONFIG.PERSONE.length; i++) {
-      var p = CONFIG.PERSONE[i];
-      if (!mappa[p.gruppo]) { mappa[p.gruppo] = []; gruppi.push(p.gruppo); }
-      mappa[p.gruppo].push(p.nome);
-    }
-    var html = '<option value="" disabled selected>' + esc(t("scegliNome")) + '</option>';
-    for (var g = 0; g < gruppi.length; g++) {
-      html += '<optgroup label="' + esc(gruppi[g]) + '">';
-      var lista = mappa[gruppi[g]];
-      for (var n = 0; n < lista.length; n++) {
-        html += '<option value="' + esc(lista[n]) + '">' + esc(lista[n]) + "</option>";
-      }
-      html += "</optgroup>";
-    }
-    html += '<optgroup label="' + esc(t("gruppoAltro")) + '"><option value="' + ALTRO + '">' +
-      esc(t("nonInLista")) + "</option></optgroup>";
-    sel.innerHTML = html;
-
+    var campo = $("#nome");
     var ricordato = leggiLS(K_NOME, null);
-    if (ricordato) {
-      var trovato = false, opts = sel.options;
-      for (var o = 0; o < opts.length; o++) { if (opts[o].value === ricordato) { trovato = true; break; } }
-      if (trovato) {
-        sel.value = ricordato;
-      } else {
-        sel.value = ALTRO;
-        $("#altroNome").value = ricordato;
-      }
-    }
-    aggiornaAltro();
-    sel.addEventListener("change", function () {
-      aggiornaAltro();
-      if (sel.value && sel.value !== ALTRO) scriviLS(K_NOME, sel.value);
-      if (sel.value === ALTRO) $("#altroNome").focus();
-    });
-    $("#altroNome").addEventListener("input", function () {
+    if (ricordato && !campo.value) campo.value = ricordato;
+    campo.addEventListener("input", function () {
       if (this.value.trim()) scriviLS(K_NOME, this.value.trim());
     });
+    campo.addEventListener("blur", function () { this.value = pulisciNome(this.value); });
   }
-  function aggiornaAltro() {
-    $("#altroNome").hidden = $("#nome").value !== ALTRO;
+  // spazi doppi via, iniziali maiuscole se è tutto minuscolo o tutto maiuscolo
+  function pulisciNome(v) {
+    v = String(v || "").replace(/\s+/g, " ").trim();
+    if (v && (v === v.toLowerCase() || v === v.toUpperCase())) {
+      v = v.toLowerCase().replace(/(^|[\s'’-])(\S)/g, function (m, sep, c) { return sep + c.toUpperCase(); });
+    }
+    return v;
   }
   function nomeScelto() {
-    var v = $("#nome").value;
-    if (v === ALTRO) return $("#altroNome").value.trim();
-    return v || "";
+    return pulisciNome($("#nome").value);
+  }
+  // nome e cognome: almeno due parole di due lettere
+  function nomeCompleto(nome) {
+    var parole = String(nome || "").split(" ").filter(function (w) { return w.replace(/[^\wÀ-ÿ]/g, "").length >= 2; });
+    return parole.length >= 2;
   }
 
   /* ---------- modulo: giorni ---------- */
@@ -986,7 +979,7 @@ const I18N = {
     var g = giornoById(stato.giorno);
     if (!apertoDavvero(g)) return;
     var nome = nomeScelto();
-    if (!nome) { mostraErrore("errNome"); return; }
+    if (!nome || !nomeCompleto(nome)) { mostraErrore("errNome"); $("#nome").focus(); return; }
     var primo = sceltaDi("primo"), secondo = sceltaDi("secondo");
     if (!primo) { mostraErrore("errPrimo"); return; }
     if (!secondo) { mostraErrore("errSecondo"); return; }
@@ -1089,9 +1082,12 @@ const I18N = {
   function renderCucina(d) {
       var risposte = d.risposte || [];
       var totale = CONFIG.PERSONE.length;
-      var hanno = {}, inLista = {}, chips = "", note = "";
-      for (var i = 0; i < risposte.length; i++) hanno[risposte[i].nome] = true;
-      for (var q = 0; q < CONFIG.PERSONE.length; q++) inLista[CONFIG.PERSONE[q].nome] = true;
+      var hanno = {}, chips = "", note = "";
+      for (var i = 0; i < risposte.length; i++) {
+        var pers = trovaPersona(risposte[i].nome);
+        if (pers) hanno[pers.nome] = true;
+        risposte[i]._inLista = !!pers;
+      }
 
       $("#kRisposte").textContent = risposte.length + " / " + totale;
       var mancanti = [], extra = [];
@@ -1099,7 +1095,7 @@ const I18N = {
         if (!hanno[CONFIG.PERSONE[p].nome]) mancanti.push(CONFIG.PERSONE[p].nome);
       }
       for (var x = 0; x < risposte.length; x++) {
-        if (!inLista[risposte[x].nome]) extra.push(risposte[x].nome);
+        if (!risposte[x]._inLista) extra.push(risposte[x].nome);
       }
       $("#kMancano").textContent = mancanti.length;
       var fl = $("#fuoriLista");
